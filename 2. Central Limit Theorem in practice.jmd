@@ -1,0 +1,44 @@
+---
+title: Central Limit Theorem in practice
+author: Lorelei Penn
+---
+
+# Introduction
+
+Given a random variable $X$, then it happens that $X \sim N(\mu, \sigma)$, which also implies:
+$$
+    \frac{X}{a} \sim N\left(\frac{\mu}{a} , \frac{\sigma}{a}\right)
+$$
+Also remembering that the expected value of $X$ is $p$ and the standard error of $X$ is $\sqrt{p(1-p)/N}$:
+\[
+\begin{align}
+    E(\bar{X}) & = p \\
+    SE(\bar{X}) & = \sqrt{p(1-p)/N}
+\end{align}
+\]  
+
+```julia
+using Distributions
+```
+
+```julia
+X̂ = 0.48
+N = 25
+se = sqrt(X̂ * (1 - X̂) / N)
+println("se: ", se)
+```
+
+And now defining the `pnorm` function as in R:
+```julia
+pnorm(x::Number) = cdf(Normal(0, 1), x)
+pnorm(0.01 / se) - pnorm(-0.01 / se)
+```
+
+# Margin of error
+
+```julia
+println("2 * se: ", 2 * se)
+println("pnorm(2) - pnorm(-2): ", pnorm(2) - pnorm(-2))
+```
+
+# Monte Carlo Simulation for CLT
